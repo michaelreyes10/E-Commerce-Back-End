@@ -33,8 +33,16 @@ router.get('/:id', (req, res) => {
   Category.findOne({
 
     where: {
-      id: req.params.id
-    }
+      id: req.params.id,
+    },
+    attributes: ["id", "category_name"],
+    //include data from the producet model
+    include: [
+      {
+        model: Product,
+        attributes: ["product_name", "price", "stock"],
+      },
+    ],
   })
     .then(category => {
       if (!category) {
@@ -67,10 +75,16 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
   Category.update({
-    where: { 
-      category_name: req.body.category_name
-}
-})
+    
+      //col and their data
+      category_name: req.body.category_name,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  )
   .then(category => res.json(category))
   .catch(err => {
     console.log(err);
@@ -82,13 +96,23 @@ router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
   Category.destroy({
     where: {
-      category_name: req.body.category_name
-    }
-    .then(category => res.json(category))
-    .catch(err => {
+      id: req.params.id,
+    },
+  })
+    .then((category) => {
+      //if no categories were found
+      if (!category) {
+        res
+          .status(404)
+          .json({ message: "No Categories found with this id..." });
+        return;
+      }
+      res.json(category);
+    })
+    .catch((err) => {
+      //Deal with any errors that occur
       console.log(err);
       res.status(500).json(err);
-    })
-  });
+    });
 });
 module.exports = router;
