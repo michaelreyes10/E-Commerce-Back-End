@@ -43,7 +43,7 @@ THEN I am able to successfully create, update, and delete data in my database
 
 ## Video
 
-[Video]https://drive.google.com/file/d/1Epok3Nny48i1-N5TLZIFQW9SCtGY7_FF/view
+[Video](https://drive.google.com/file/d/1Epok3Nny48i1-N5TLZIFQW9SCtGY7_FF/view)
 
 ## Github
 
